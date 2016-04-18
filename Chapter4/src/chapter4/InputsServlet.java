@@ -27,7 +27,7 @@ public class InputsServlet extends HttpServlet{
 		for(Entry<String, String[]> parameter : parameters){
 			String key = parameter.getKey();
 			String[] values = parameter.getValue();
-			System.out.println(key + " : ");
+			System.out.print(key + " : ");
 			for(String value : values){
 				System.out.print(value);
 				System.out.println(", ");
@@ -54,8 +54,8 @@ public class InputsServlet extends HttpServlet{
 		inputsResult.setMemo(request.getParameter("memo"));
 		inputsResult.setSubmit1(request.getParameter("submit1"));
 		inputsResult.setSubmit2(request.getParameter("submit2"));
-		inputsResult.setImage_x(request.getParameter("image_x"));
-		inputsResult.setImage_y(request.getParameter("image_y"));
+		inputsResult.setImage_x(request.getParameter("image.x"));
+		inputsResult.setImage_y(request.getParameter("image.y"));
 
 		return inputsResult;
 	}
