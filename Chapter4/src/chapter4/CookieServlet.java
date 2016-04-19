@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 @WebServlet("/cookie")
 public class CookieServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -22,12 +21,12 @@ public class CookieServlet extends HttpServlet {
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		String userName = null;
 		userName = request.getParameter("name");
-		if (StringUtils.isEmpty(userName) == true) {
+		if (StringUtil.isEmpty(userName)) {
 			userName = getUserNameFromCookie(request);
 		}
 		setUserNameToCookie(response, userName);
 		request.setAttribute("userName", userName);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("cookies.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("cookie.jsp");
 		dispatcher.forward(request, response);
 	}
 
