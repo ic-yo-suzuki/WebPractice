@@ -1,6 +1,7 @@
 package chapter6.controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class SignUp extends HttpServlet{
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)throws IOException, ServletException{
 		List<String> messages = new ArrayList<String>();
 		HttpSession session = request.getSession();
+		request.setCharacterEncoding("UTF-8");
 
 		if(isValid(request, messages)){
 			User user = new User();
@@ -37,8 +39,13 @@ public class SignUp extends HttpServlet{
 			user.setPassword(request.getParameter("password"));
 			user.setEmail(request.getParameter("email"));
 			user.setDescription(request.getParameter("description"));
+			System.out.printf("%s, %s, %s, %s \n", user.getName(), user.getAccount(), user.getEmail(), user.getDescription());
 
-			new UserService().register(user);
+			try {
+				new UserService().register(user);
+			} catch (SQLException e) {
+
+			}
 
 			response.sendRedirect("./");
 		}else{

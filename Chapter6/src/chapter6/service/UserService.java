@@ -3,12 +3,14 @@ package chapter6.service;
 import static chapter6.utils.DBUtil.*;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import chapter6.beans.User;
+import chapter6.dao.UserDao;
 import chapter6.utils.CipherUtil;
 
 public class UserService {
-	public void register(User user){
+	public void register(User user) throws SQLException{
 		Connection connection = null;
 		try{
 			connection = getConnection();
@@ -26,7 +28,25 @@ public class UserService {
 			throw e;
 		}
 		finally{
-			close(connection);
+			connection.close();
 		}
+	}
+
+	public User getUser(int userId) throws SQLException{
+		Connection connection = null;
+		User user = null;
+		try{
+			connection = getConnection();
+			UserDao userDao = new UserDao();
+
+			user = userDao.getUser(connection, userId);
+			commit(connection);
+
+		}catch(Error e){
+			rollback(connection);
+		}finally{
+			connection.close();
+		}
+		return user;
 	}
 }

@@ -12,7 +12,7 @@ public class StreamUtil {
 				output.write(buffer, 0, n);
 			}
 		}catch(IOException e){
-			throw new IORuntimeException(e);
+//			throw new IORuntimeException(e);
 		}
 	}
 }

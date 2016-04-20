@@ -17,20 +17,22 @@ public class DBUtil {
 		}
 	}
 	public static Connection getConnection(){
+		Connection connection = null;
 		try{
-			Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+			connection = DriverManager.getConnection(URL, USER, PASSWORD);
 			connection.setAutoCommit(false);
-			return connection;
+
 		}catch(SQLException e){
-			throw new SQLRuntimeException(e);
+//			throw new SQLRuntimeException(e);
 		}
+		return connection;
 	}
 
 	public static void commit(Connection connection){
 		try{
 			connection.commit();
 		}catch(SQLException e){
-			throw new SQLRuntimeException(e);
+//			throw new SQLRuntimeException(e);
 		}
 	}
 
@@ -38,7 +40,7 @@ public class DBUtil {
 		try{
 			connection.rollback();
 		}catch(SQLException e){
-			throw new SQLRuntimeException(e);
+//			throw new SQLRuntimeException(e);
 		}
 	}
 }
