@@ -1,5 +1,7 @@
 package chapter6.dao;
 
+import static chapter6.utils.CloseableUtil.*;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,10 +25,9 @@ public class UserMessageDao {
 
 			ResultSet rs = ps.executeQuery();
 			ret = toUserMessageList(rs);
-		}catch(SQLException e){
-			e.printStackTrace();
+
 		}finally{
-			ps.close();
+			close(ps);
 		}
 		return ret;
 	}

@@ -23,12 +23,7 @@ public class TopServlet extends HttpServlet {
 		if(user != null){
 			isShowMessageForm = true;
 		}
-		List<UserMessage> messages = null;
-		try {
-			messages = new MessageService().getMessage();
-		} catch (Exception e) {
-
-		}
+		List<UserMessage> messages =  new MessageService().getMessage();
 		request.setAttribute("messages", messages);
 		request.setAttribute("isShowMessageForm", isShowMessageForm);
 		request.getRequestDispatcher("/top.jsp").forward(request, response);

@@ -1,5 +1,7 @@
 package chapter6.dao;
 
+import static chapter6.utils.CloseableUtil.*;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -22,7 +24,7 @@ public class MessageDao {
 		}catch(SQLException e){
 
 		}finally{
-			ps.close();
+			close(ps);
 		}
 	}
 }

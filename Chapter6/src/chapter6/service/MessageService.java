@@ -1,5 +1,6 @@
 package chapter6.service;
 
+import static chapter6.utils.CloseableUtil.*;
 import static chapter6.utils.DBUtil.*;
 
 import java.sql.Connection;
@@ -9,6 +10,7 @@ import chapter6.beans.Message;
 import chapter6.beans.UserMessage;
 import chapter6.dao.MessageDao;
 import chapter6.dao.UserMessageDao;
+
 
 public class MessageService {
 	public void register(Message message) throws Exception{
@@ -28,28 +30,28 @@ public class MessageService {
 			rollback(connection);
 			throw e;
 		}finally{
-			connection.close();
+			close(connection);
 		}
 	}
 	private static final int LIMIT_NUM = 1000;
-	public List<UserMessage> getMessage() throws Exception {
+	public List<UserMessage> getMessage() {
 		Connection connection = null;
-		List<UserMessage> ret;
+		List<UserMessage> ret = null;
 		try{
 			connection = getConnection();
 			UserMessageDao messageDao = new UserMessageDao();
 			ret = messageDao.getUserMessages(connection, LIMIT_NUM);
 			commit(connection);
 		}catch(RuntimeException e){
-			e.printStackTrace();
 			rollback(connection);
 			throw e;
 		}catch(Error e){
-			e.printStackTrace();
 			rollback(connection);
 			throw e;
+		} catch (Exception e) {
+
 		}finally{
-			connection.close();
+			close(connection);
 		}
 		return ret;
 	}

@@ -45,6 +45,7 @@ public class LoginServlet extends HttpServlet {
 			List<String> messages = new ArrayList<String>();
 			messages.add("ログインに失敗しました");
 			session.setAttribute("errorMessages",  messages);
+			session.setAttribute("inputValue", request.getParameter("accountOrEmail"));
 			response.sendRedirect("login");
 		}
 	}

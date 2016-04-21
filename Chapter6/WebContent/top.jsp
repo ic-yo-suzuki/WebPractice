@@ -35,16 +35,16 @@
 		</div>
 		</c:when>
 	</c:choose>
-	<div class = "form-area">
-		<c:if test = "${isShowMessageForm }">
+	<c:if test = "${isShowMessageForm }">
+		<div class = "form-area">
 			<form action = "newMessage" method = "post">
 				いま、どうしてる？<br />
 				<textarea name = "message" cols = "100" rows = "5" class = "tweet-box"></textarea>
 				<br />
 				<input type = "submit" value = "つぶやく">(140文字まで)
 			</form>
-		</c:if>
-	</div>
+		</div>
+	</c:if>
 	<div class = "messages">
 		<c:forEach items = "${messages }" var = "message">
 		<div class = "message">

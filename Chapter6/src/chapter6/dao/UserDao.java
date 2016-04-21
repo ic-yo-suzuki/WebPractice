@@ -1,5 +1,7 @@
 package chapter6.dao;
 
+import static chapter6.utils.CloseableUtil.*;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,12 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import chapter6.beans.User;
+import chapter6.exception.NoRowsUpdatedRuntimeException;
+import chapter6.exception.SQLRuntimeException;
 
 public class UserDao {
 
 
 
-	public void insert(Connection connection, User user) throws SQLException{
+	public void insert(Connection connection, User user) {
 		PreparedStatement ps = null;
 		try{
 			StringBuilder sql = new StringBuilder();
@@ -38,11 +42,11 @@ public class UserDao {
 		}catch(SQLException e){
 //			throw new SQLRuntimeException(e);
 		}finally{
-			ps.close();
+			close(ps);
 		}
 	}
 
-	private List<User> toUserList(ResultSet rs) throws SQLException{
+	private List<User> toUserList(ResultSet rs) throws Exception {
 		List<User> ret = new ArrayList<User>();
 		try{
 			while(rs.next()){
@@ -70,11 +74,11 @@ public class UserDao {
 			return ret;
 
 		}finally{
-			rs.close();
+			close(rs);
 		}
 	}
 
-	public User getUser(Connection connection, String accountOrEmail, String encPassword) throws Exception {
+	public User getUser(Connection connection, String accountOrEmail, String encPassword) {
 		PreparedStatement ps = null;
 		List<User> userList = null;
 		try{
@@ -93,14 +97,14 @@ public class UserDao {
 			}else{
 
 			}
-		}catch(SQLException e){
+		}catch(Exception e){
 		}finally{
-			ps.close();
+			close(ps);
 		}
 		return userList.get(0);
 	}
 
-	public User getUser(Connection connection, int id) throws SQLException{
+	public User getUser(Connection connection, int id) {
 		PreparedStatement ps = null;
 		List<User> userList = null;
 		try{
@@ -115,12 +119,39 @@ public class UserDao {
 			}else if(2 <= userList.size()){
 				throw new IllegalStateException("2 <= userList.size()");
 			}
-		}catch(SQLException e){
+		}catch(Exception e){
 
 		}finally{
-			ps.close();
+			close(ps);
 		}
 		return userList.get(0);
+	}
+
+	public void update(Connection connection, User user) {
+		PreparedStatement ps = null;
+		try{
+			StringBuilder sql = new StringBuilder();
+			sql.append("update user set account = ?, name = ?, email = ?, password = ?, description = ?, update_date = CURRENT_TIMESTAMP ");
+			sql.append("where id = ? and update_date = ?;");
+
+			ps = connection.prepareStatement(sql.toString());
+			ps.setString(1, user.getAccount());
+			ps.setString(2, user.getName());
+			ps.setString(3, user.getEmail());
+			ps.setString(4, user.getPassword());
+			ps.setString(5, user.getDescription());
+			ps.setInt(6, user.getId());
+			ps.setTimestamp(7, new Timestamp(user.getUpdateDate().getTime()));
+			System.out.println(ps.toString());
+			if((ps.executeUpdate()) == 0){
+				throw new NoRowsUpdatedRuntimeException();
+			}
+		}catch(SQLException e){
+			throw new SQLRuntimeException(e);
+		}finally{
+			close(ps);
+		}
+
 	}
 
 }

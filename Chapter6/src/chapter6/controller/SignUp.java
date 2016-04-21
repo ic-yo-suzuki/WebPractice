@@ -1,7 +1,6 @@
 package chapter6.controller;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +23,7 @@ public class SignUp extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)throws IOException, ServletException{
 		request.getRequestDispatcher("signup.jsp").forward(request, response);
+
 	}
 
 	@Override
@@ -31,26 +31,21 @@ public class SignUp extends HttpServlet{
 		List<String> messages = new ArrayList<String>();
 		HttpSession session = request.getSession();
 		request.setCharacterEncoding("UTF-8");
+		User user = new User();
+		user.setName(request.getParameter("name"));
+		user.setAccount(request.getParameter("account"));
+		user.setPassword(request.getParameter("password"));
+		user.setEmail(request.getParameter("email"));
+		user.setDescription(request.getParameter("description"));
 
 		if(isValid(request, messages)){
-			User user = new User();
-			user.setName(request.getParameter("name"));
-			user.setAccount(request.getParameter("account"));
-			user.setPassword(request.getParameter("password"));
-			user.setEmail(request.getParameter("email"));
-			user.setDescription(request.getParameter("description"));
-			System.out.printf("%s, %s, %s, %s \n", user.getName(), user.getAccount(), user.getEmail(), user.getDescription());
-
-			try {
-				new UserService().register(user);
-			} catch (SQLException e) {
-
-			}
-
+			new UserService().register(user);
 			response.sendRedirect("./");
 		}else{
-			session.setAttribute("errorMessage", messages);
+			session.setAttribute("errorMessages", messages);
+			session.setAttribute("inputValues", user);
 			response.sendRedirect("signup");
+			session.removeAttribute("editUser");
 		}
 	}
 
@@ -59,9 +54,11 @@ public class SignUp extends HttpServlet{
 		String passoword = request.getParameter("password");
 
 		if(StringUtils.isEmpty(account)){
+			System.out.println("アカウント");
 			messages.add("アカウント名を入力してください");
 		}
 		if(StringUtils.isEmpty(passoword)){
+			System.out.println("パスワード");
 			messages.add("パスワードを入力してください");
 		}
 		// TODO アカウントがすでに利用されていないか、メールアドレスが

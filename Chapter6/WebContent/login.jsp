@@ -19,18 +19,19 @@
 					</c:forEach>
 				</ul>
 			</div>
-			<c:remove var="errorMessage" scope = "session"/>
+			<c:remove var = "errorMessages" scope = "session"/>
 		</c:if>
 
 		<form action = "login" method = "post"> <br />
 			<label for ="accountOrEmail"> アカウント名かメールアドレス</label>
-			<input name = "accountOrEmail" id = "accountOrEmail" /> <br />
+			<input name = "accountOrEmail" id = "accountOrEmail" value = "${inputValue }" /> <br />
 			<label for = "password">パスワード</label>
 			<input name = "password" type = "password" id = "password" /> <br />
 			<input type = "submit" value = "ログイン" /> <br />
 			<a href = "./"> 戻る</a>
+			<c:remove var = "inputValue" scope = "session"/>
 		</form>
-		<div class = "copyright">Copyright(c) Satoshi Kimura</div>
+		<div class = "copyright">Copyright(c) Yoshihiro Suzuki</div>
 	</div>
 
 </body>
