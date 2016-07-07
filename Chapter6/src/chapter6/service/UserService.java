@@ -11,9 +11,8 @@ import chapter6.utils.CipherUtil;
 
 public class UserService {
 	public void register(User user) {
-		Connection connection = null;
+		Connection connection = getConnection();
 		try{
-			connection = getConnection();
 			String encPassword = CipherUtil.encrypt(user.getPassword());
 			user.setPassword(encPassword);
 
@@ -21,7 +20,9 @@ public class UserService {
 			userDao.insert(connection, user);
 			commit(connection);
 		}catch(RuntimeException e){
-			rollback(connection);
+			if(connection != null){
+				rollback(connection);
+			}
 			throw e;
 		}catch(Error e){
 			rollback(connection);

@@ -40,7 +40,7 @@ public class SignUp extends HttpServlet{
 
 		if(isValid(request, messages)){
 			new UserService().register(user);
-			response.sendRedirect("./");
+			response.sendRedirect("/top");
 		}else{
 			session.setAttribute("errorMessages", messages);
 			session.setAttribute("inputValues", user);
